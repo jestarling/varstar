@@ -1,0 +1,1159 @@
+conv=0.00001
+#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)#
+	phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001
+#Loop until convergence is met, or max iterations is met.#
+	for (i in 1:maxiter){#
+		#EXPECTATION STEP#
+		#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}#
+#
+		#Calculate estimated responsibilities#
+		for (j in 1:K){#
+			ghat[j,] <- phat[i,j]*densities[[j]](x) / denom#
+		}#
+		#MAXIMIZATION STEP#
+		phat[i+1,] <- rowMeans(ghat)#
+		#CALCULATE LOG-LIKELIHOOD FUNCTION#
+		for (j in 1:K){#
+			l[i+1] <- l[i+1] + sum(log(phat[i+1,j]*densities[[j]](x)+epsilon))#
+		}#
+		iterations <- i+1 #Increment iteration count.#
+		#CHECK IF CONVERGENCE MET#
+		if(abs(l[i+1]-l[i])<=conv) {break}#
+	}
+i
+j
+ghat
+rowmeans(ghat)
+i
+#EXPECTATION STEP#
+		#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}#
+#
+		#Calculate estimated responsibilities#
+		for (j in 1:K){#
+			ghat[j,] <- phat[i,j]*densities[[j]](x) / denom#
+		}
+j
+phat
+densities[[1]]
+x
+f_sample
+x=f_sample
+x
+K = length(densities) #Defines number of densities provided.#
+	## --------------------------------------#
+	##Error check sum(probs = 1):#
+	if (sum(p)!=1) stop("Sum of probabilities must equal 1.")#
+	##Error check: Number of starting probs p = number of densities provided in list#
+	if (length(densities)  != length(p)){  #
+		stop("Provide same number of densities and starting probabilities")}#
+	## Error check density inputs:#
+	for (i in 1:K){#
+		try(densities[[i]](x),silent=T)#
+		if(substr(geterrmessage(),1,26)=='Error in densities[[i]](x)'){#
+			stop("All densities must be in valid format. \n#
+				Example: dens1 = function(x) {return(dnorm(x,mean=0,sd=1))}")}#
+	}#
+	## --------------------------------------#
+	#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)#
+	phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001
+p
+p=rep(.2,5)
+K = length(densities) #Defines number of densities provided.#
+	## --------------------------------------#
+	##Error check sum(probs = 1):#
+	if (sum(p)!=1) stop("Sum of probabilities must equal 1.")#
+	##Error check: Number of starting probs p = number of densities provided in list#
+	if (length(densities)  != length(p)){  #
+		stop("Provide same number of densities and starting probabilities")}#
+	## Error check density inputs:#
+	for (i in 1:K){#
+		try(densities[[i]](x),silent=T)#
+		if(substr(geterrmessage(),1,26)=='Error in densities[[i]](x)'){#
+			stop("All densities must be in valid format. \n#
+				Example: dens1 = function(x) {return(dnorm(x,mean=0,sd=1))}")}#
+	}#
+	## --------------------------------------#
+	#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)#
+	phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001
+i
+i=1
+#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}
+#Calculate estimated responsibilities#
+		for (j in 1:K){#
+			ghat[j,] <- phat[i,j]*densities[[j]](x) / denom#
+		}#
+		#MAXIMIZATION STEP#
+		phat[i+1,] <- rowMeans(ghat)#
+		#CALCULATE LOG-LIKELIHOOD FUNCTION#
+		for (j in 1:K){#
+			l[i+1] <- l[i+1] + sum(log(phat[i+1,j]*densities[[j]](x)+epsilon))#
+		}#
+		iterations <- i+1 #Increment iteration count.#
+		#CHECK IF CONVERGENCE MET#
+		if(abs(l[i+1]-l[i])<=conv) {break}
+i
+load("/Users/jennstarling/TAMU/STAT 685 (Astronomy Group)/Week 11_Spring Semester start/Week_11_R_WORKSPACE")
+#Load libraries#
+library(roxygen2)#
+library(devtools)#
+#
+#Set working directory before installing package:#
+wd("/Users/jennstarling/TAMU/STAT 685 (Astronomy Group)/varstar_package/varstar")#
+#
+#Update package documentation:#
+document()#
+#
+#Install & load the package#
+install("/Users/jennstarling/TAMU/STAT 685 (Astronomy Group)/varstar_package/varstar")#
+library(varstar)
+save(hip, file="data.rda")
+save(linear, file="data.rda")
+ls()
+save(EST_MIXING_PROPS, file="data.rda")
+document()
+?varstar
+document()
+?varstar
+?varstar-package
+head(known)
+head(linear)
+head(hip)
+data()
+data(package='varstar')
+data(package=varstar)
+?roxygen2
+?devtools
+devtools::use_data(hip,varstar)
+?varstar
+?use_data
+wd()
+devtools::use_data(hip)
+devtools::use_data(linear)
+ls()
+devtools::use_data(EST_MIXING_PROPS)
+varstar(linear)
+invisible(linear)
+?invisible
+linear
+data(varstar)
+?data
+EST_MIXING_PROPS_HIP <- EST_MIXING_PROPS
+est_mixing_props_linear <- EST_MIXING_PROPS
+rm(EST_MIXING_PROPS_HIP)
+devtools::use_data(est_mixing_props_linear)
+est_mixing_props_hip <- featureMixtureProportion(df=hip)
+est_mixing_props_hip
+devtools::use_data(est_mixing_props_hip)
+est_mixing_props_linear
+nrow(hip)
+ncol(hip)
+feature_names
+document()
+?hip
+nrow(linear)
+ls()
+document()
+document()
+?est_mixing_props_linear
+?install_github
+# Manually construct the weighted known data set to ensure all minority #
+# classes are represented, and the class proportions are as close as possible#
+# to p_prime_hat.#
+#
+# Extract each class into its own data set (using known data).#
+known_eb <- known[which(known$class=='eb'), ]#
+known_lpv <- known[which(known$class=='lpv'), ]#
+known_rrab <- known[which(known$class=='rrab'), ]#
+known_rrc <- known[which(known$class=='rrc'), ]#
+known_sxp_ds <- known[which(known$class=='sxp_ds'), ]#
+#
+# Calculate sample sizes for each class to include in weighted known set.#
+# Weighted sample sizes are based on estimated class proportions of unknown set.#
+min_sample=5 #Ensures no classes have <5 obs. (Avoids cross-val errors.)#
+n_wtd <- round(p_prime_hat * nrow(known)) #
+for (i in which(n_wtd < min_sample)) {#
+  n_wtd[i]=min_sample#
+}#
+#
+# Randomly sample, with replacement, each class.#
+set.seed(403)#
+known_eb_wtd <- known_eb[sample(seq(1:nrow(known_eb)),n_wtd[1],replace=T), ]#
+known_lpv_wtd <- known_lpv[sample(seq(1:nrow(known_lpv)),n_wtd[2],replace=T), ]#
+known_rrab_wtd <- known_rrab[sample(seq(1:nrow(known_rrab)),n_wtd[3],replace=T), ]#
+known_rrc_wtd <- known_rrc[sample(seq(1:nrow(known_rrc)),n_wtd[4],replace=T), ]#
+known_sxp_ds_wtd <- known_sxp_ds[sample(seq(1:nrow(known_sxp_ds)),n_wtd[5],replace=T), ]#
+#
+# Reassemble data set:#
+known_wtd <- rbind(known_eb_wtd, known_lpv_wtd, known_rrab_wtd,#
+                    known_rrc_wtd, known_sxp_ds_wtd)#
+#
+# Verify reassembled weighted data set class proportions match p_prime_hat.#
+mixing_props_known_wtd <- calcProps(known_wtd)#
+mixing_props_known_wtd	#Display new weighted known class proportions.#
+p_prime_hat				#Display estimated unknown class proportions for reference.#
+#
+# Set up trainControl parameters for re-use.#
+ctrl <- trainControl(method='cv', #K-fold Cross-validation#
+                      number=5, #Number of folds for each cross-validation#
+                      classProbs=F)#
+#
+# OOB RF with EM-corrupt features removed & weighted known set: Train model. #
+set.seed(403)#
+model_oob_wtd_EM <- myRF(known=known_wtd, unknown=unknown,ctrl=ctrl,keeps=keepsEM)#
+model_oob_wtd_EM[c(1,3,5,6)] #ERROR RATE 17.3%, is best.
+library(caret)
+# Manually construct the weighted known data set to ensure all minority #
+# classes are represented, and the class proportions are as close as possible#
+# to p_prime_hat.#
+#
+# Extract each class into its own data set (using known data).#
+known_eb <- known[which(known$class=='eb'), ]#
+known_lpv <- known[which(known$class=='lpv'), ]#
+known_rrab <- known[which(known$class=='rrab'), ]#
+known_rrc <- known[which(known$class=='rrc'), ]#
+known_sxp_ds <- known[which(known$class=='sxp_ds'), ]#
+#
+# Calculate sample sizes for each class to include in weighted known set.#
+# Weighted sample sizes are based on estimated class proportions of unknown set.#
+min_sample=5 #Ensures no classes have <5 obs. (Avoids cross-val errors.)#
+n_wtd <- round(p_prime_hat * nrow(known)) #
+for (i in which(n_wtd < min_sample)) {#
+  n_wtd[i]=min_sample#
+}#
+#
+# Randomly sample, with replacement, each class.#
+set.seed(403)#
+known_eb_wtd <- known_eb[sample(seq(1:nrow(known_eb)),n_wtd[1],replace=T), ]#
+known_lpv_wtd <- known_lpv[sample(seq(1:nrow(known_lpv)),n_wtd[2],replace=T), ]#
+known_rrab_wtd <- known_rrab[sample(seq(1:nrow(known_rrab)),n_wtd[3],replace=T), ]#
+known_rrc_wtd <- known_rrc[sample(seq(1:nrow(known_rrc)),n_wtd[4],replace=T), ]#
+known_sxp_ds_wtd <- known_sxp_ds[sample(seq(1:nrow(known_sxp_ds)),n_wtd[5],replace=T), ]#
+#
+# Reassemble data set:#
+known_wtd <- rbind(known_eb_wtd, known_lpv_wtd, known_rrab_wtd,#
+                    known_rrc_wtd, known_sxp_ds_wtd)#
+#
+# Verify reassembled weighted data set class proportions match p_prime_hat.#
+mixing_props_known_wtd <- calcProps(known_wtd)#
+mixing_props_known_wtd	#Display new weighted known class proportions.#
+p_prime_hat				#Display estimated unknown class proportions for reference.#
+#
+# Set up trainControl parameters for re-use.#
+ctrl <- trainControl(method='cv', #K-fold Cross-validation#
+                      number=5, #Number of folds for each cross-validation#
+                      classProbs=F)#
+#
+# OOB RF with EM-corrupt features removed & weighted known set: Train model. #
+set.seed(403)#
+model_oob_wtd_EM <- myRF(known=known_wtd, unknown=unknown,ctrl=ctrl,keeps=keepsEM)#
+model_oob_wtd_EM[c(1,3,5,6)] #ERROR RATE 17.3%, is best.
+#Set up ctrl and grid parameters for repeat model runs.#
+ctrl <- trainControl(method='cv', #K-fold Cross-validation#
+                     number=5, #Number of folds for each cross-validation#
+                     classProbs=F)#
+grid <- data.frame(.mtry=round(sqrt(length(keepsEM))))#
+#
+# Calculate an average error rate for 10 runs of the wtd2_EM model:#
+set.seed(403)#
+nmodels=1#
+wtd_EM_err <- rep(0,nmodels) #Set up vector to hold errors.#
+model_oob_wtd_EM = list()#
+#
+for (i in 1:nmodels){#
+  #set.seed(403)#
+  model_oob_wtd_EM[[i]] <- myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grid,keeps=keepsEM)#
+  wtd_EM_err[i] <- model_oob_wtd_EM[[i]]$unknown.error#
+}#
+#
+# Calculate mean and median errors for repetition of classification process.#
+wtd_EM_meanErr <- mean(wtd_EM_err)#
+wtd_EM_meanErr #RESULT: 0.1854845 (18.55%)#
+wtd_EM_medianErr <- median(wtd_EM_err)#
+wtd_EM_medianErr #RESULT: 0.173062 (17.31%)#
+#
+range(wtd_EM_err) #Display range of errors for repetition.#
+#
+# Print details for the best model out of all of the models run above.#
+best_model=wtd2_EM_err[wtd_EM_err==min(wtd_EM_err)]#
+print(model_oob_wtd_EM[[best_model]]$model)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_known)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_unknown)#
+#
+#-------------------------------------------------------------
+# Calculate mean and median errors for repetition of classification process.#
+wtd_EM_meanErr <- mean(wtd_EM_err)#
+wtd_EM_meanErr #RESULT: 0.1854845 (18.55%)#
+wtd_EM_medianErr <- median(wtd_EM_err)#
+wtd_EM_medianErr #RESULT: 0.173062 (17.31%)#
+#
+range(wtd_EM_err) #Display range of errors for repetition.#
+#
+# Print details for the best model out of all of the models run above.#
+best_model=wtd_EM_err[wtd_EM_err==min(wtd_EM_err)]#
+print(model_oob_wtd_EM[[best_model]]$model)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_known)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_unknown)#
+#
+#-------------------------------------------------------------
+grid
+# Calculate an average error rate for 10 runs of the wtd2_EM model:#
+set.seed(403)#
+nmodels=1#
+wtd_EM_err <- rep(0,nmodels) #Set up vector to hold errors.#
+model_oob_wtd_EM = list()#
+#
+for (i in 1:nmodels){#
+  #set.seed(403)#
+  model_oob_wtd_EM[[i]] <- myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grid,keeps=keepsEM)#
+  wtd_EM_err[i] <- model_oob_wtd_EM[[i]]$unknown.error#
+}
+x$model <- train(class ~ ., #
+	                 data=known[,keeps],#
+			             method='rf',#
+			             metric='Accuracy',#
+			             trControl= ctrl,#
+			             tuneGrid=grid)
+keeps
+#Train model using known data.#
+	x$model <- train(class ~ ., #
+	                 data=known[,keeps],#
+			             method='rf',#
+			             metric='Accuracy',#
+			             trControl= ctrl,#
+			             tuneGrid=grid)
+document()
+nmodels
+wtd_EM_err <- rep(0,nmodels) #Set up vector to hold errors.#
+model_oob_wtd_EM = list()
+for (i in 1:nmodels){#
+  #set.seed(403)#
+  model_oob_wtd_EM[[i]] <- myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grid,keeps=keepsEM)#
+  wtd_EM_err[i] <- model_oob_wtd_EM[[i]]$unknown.error#
+}
+grd <- data.frame(.mtry=round(sqrt(length(keepsEM))))#
+#
+# Calculate an average error rate for 10 runs of the wtd2_EM model:#
+set.seed(403)#
+nmodels=1#
+wtd_EM_err <- rep(0,nmodels) #Set up vector to hold errors.#
+model_oob_wtd_EM = list()#
+#
+for (i in 1:nmodels){#
+  #set.seed(403)#
+  model_oob_wtd_EM[[i]] <- myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grd,keeps=keepsEM)#
+  wtd_EM_err[i] <- model_oob_wtd_EM[[i]]$unknown.error#
+}
+myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grid,keeps=keepsEM)
+head(known_wtd)
+grid
+ctrl
+x = list()#
+#
+	#Train model using known data.#
+	x$model <- train(class ~ ., #
+	                 data=known[,keeps],#
+			             method='rf',#
+			             metric='Accuracy',#
+			             trControl= ctrl,#
+			             tuneGrid=grid)#
+#
+	#Predict class values for unknown data.#
+	x$classPred <- predict(x$model, newdata=unknown)
+myRF = function(known, unknown, ctrl, grid, keeps)#
+{	#
+	x = list()#
+	grid=grid#
+#
+	#Train model using known data.#
+	x$model <- train(class ~ ., #
+	                 data=known[,keeps],#
+			             method='rf',#
+			             metric='Accuracy',#
+			             trControl= ctrl,#
+			             tuneGrid=grid)#
+#
+	#Predict class values for unknown data.#
+	x$classPred <- predict(x$model, newdata=unknown)						#
+#
+	#Calculate error rates and confusion matrices.#
+#
+	#1. Test model confusion matrix (for cross-validated model):#
+	x$conf_matrix_known <- confusionMatrix(predict(x$model), known$class) #
+	x$result <- x$model$result#
+	#2. Error rate & confusion matrix for model applied to unknown set.#
+	x$unknown.error <- mean(1-(x$classPred==unknown$class))#
+	x$conf_matrix_unknown <- confusionMatrix(x$classPred, unknown$class)#
+#
+	#Return all of the pieces calculated previously.#
+	return(x)#
+}
+ctrl <- trainControl(method='cv', #K-fold Cross-validation#
+                     number=5, #Number of folds for each cross-validation#
+                     classProbs=F)#
+grid <- data.frame(.mtry=round(sqrt(length(keepsEM))))#
+#
+# Calculate an average error rate for 10 runs of the wtd2_EM model:#
+set.seed(403)#
+nmodels=1#
+wtd_EM_err <- rep(0,nmodels) #Set up vector to hold errors.#
+model_oob_wtd_EM = list()#
+#
+for (i in 1:nmodels){#
+  #set.seed(403)#
+  model_oob_wtd_EM[[i]] <- myRF(known=known_wtd,  #
+  	unknown=unknown,ctrl=ctrl,grid=grid,keeps=keepsEM)#
+  wtd_EM_err[i] <- model_oob_wtd_EM[[i]]$unknown.error#
+}
+model_oob_wtd_EM
+# Calculate mean and median errors for repetition of classification process.#
+wtd_EM_meanErr <- mean(wtd_EM_err)#
+wtd_EM_meanErr #RESULT: 0.1854845 (18.55%)#
+wtd_EM_medianErr <- median(wtd_EM_err)#
+wtd_EM_medianErr #RESULT: 0.173062 (17.31%)#
+#
+range(wtd_EM_err) #Display range of errors for repetition.#
+#
+# Print details for the best model out of all of the models run above.#
+best_model=wtd_EM_err[wtd_EM_err==min(wtd_EM_err)]#
+print(model_oob_wtd_EM[[best_model]]$model)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_known)#
+print(model_oob_wtd_EM[[best_model]]$conf_matrix_unknown)
+f_name
+# Set up empirical density function for Classes 1-5 for unknown data set.#
+	# Set up empirical density function for Class 1#
+	f_class1 = df[df$class=="eb",f_name]#
+    	kd1  = density(f_class1)#
+    	dens1 = function(x){#
+		min_den <- quantile(kd1$y,.05)#
+		de <- approx(kd1$x,kd1$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 2#
+    	f_class2 = df[df$class=="lpv",f_name]#
+    	kd2  = density(f_class2)#
+    	dens2 = function(x){#
+		min_den <- quantile(kd2$y,.05)#
+		de <- approx(kd2$x,kd2$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 3#
+    	f_class3 = df[df$class=="rrab",f_name]#
+    	kd3  = density(f_class3)#
+    	dens3 = function(x){#
+		min_den <- quantile(kd3$y,.05)#
+		de <- approx(kd3$x,kd3$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+#
+	# Set up empirical density function for Class 4#
+    	f_class4 = df[df$class=="rrc",f_name]#
+    	kd4  = density(f_class4)#
+    	dens4 = function(x){#
+		min_den <- quantile(kd4$y,.05)#
+		de <- approx(kd4$x,kd4$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 5#
+    	f_class5 = df[df$class=="sxp_ds",f_name]#
+    	kd5  = density(f_class5)#
+    	dens5 = function(x){#
+		min_den <- quantile(kd5$y,.05)#
+		de <- approx(kd5$x,kd5$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}
+kd1
+kd2
+kd3
+kd4
+kd5
+densities
+f_name
+k
+classes
+for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+# Set up empirical density function for Classes 1-k for unknown data set.#
+  for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+em
+#Set up list objects to hold density function components.#
+  f_class <- list()#
+  kd <- list()#
+  densities <- list()
+for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+em$p
+f_name <- feature_names[[1]]
+f_name
+# Set up empirical density function for Classes 1-k for unknown data set.#
+  for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+p_list=list()  # Set up a list to hold the mixing proportions for each feature.
+# Set up empirical density function for Classes 1-k for unknown data set.#
+  for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+p_list
+densities
+kd[[1]]
+kd[[2]]
+kd[[3]]
+kd[[4]]
+kd[[5]]
+# Set up empirical density function for Classes 1-5 for unknown data set.#
+	# Set up empirical density function for Class 1#
+	f_class1 = df[df$class=="eb",f_name]#
+    	kd1  = density(f_class1)#
+    	dens1 = function(x){#
+		min_den <- quantile(kd1$y,.05)#
+		de <- approx(kd1$x,kd1$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 2#
+    	f_class2 = df[df$class=="lpv",f_name]#
+    	kd2  = density(f_class2)#
+    	dens2 = function(x){#
+		min_den <- quantile(kd2$y,.05)#
+		de <- approx(kd2$x,kd2$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 3#
+    	f_class3 = df[df$class=="rrab",f_name]#
+    	kd3  = density(f_class3)#
+    	dens3 = function(x){#
+		min_den <- quantile(kd3$y,.05)#
+		de <- approx(kd3$x,kd3$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+#
+	# Set up empirical density function for Class 4#
+    	f_class4 = df[df$class=="rrc",f_name]#
+    	kd4  = density(f_class4)#
+    	dens4 = function(x){#
+		min_den <- quantile(kd4$y,.05)#
+		de <- approx(kd4$x,kd4$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 5#
+    	f_class5 = df[df$class=="sxp_ds",f_name]#
+    	kd5  = density(f_class5)#
+    	dens5 = function(x){#
+		min_den <- quantile(kd5$y,.05)#
+		de <- approx(kd5$x,kd5$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	densities <- list(dens1,dens2,dens3,dens4,dens5)
+v
+em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+em$p
+kd1
+kd[[1]]
+maxiter
+for (h in 1:k){#
+  	f_class[[h]] = df[df$class==classes[h],f_name]#
+  	kd[[h]]  = density(f_class[[h]])#
+  	densities[[h]] = function(x){#
+		min_den <- quantile(kd[[h]]$y,.05)#
+		de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]
+densities
+kd
+kd[[5]](x)
+densities[[1]](f_name)
+densities
+#Set up list objects to hold density function components.#
+  f_class <- list()#
+  kd <- list()#
+  densities <- list()
+# Set up empirical density function for Classes 1-k for unknown data set.#
+  for (j in 1:k){#
+  	f_class[[j]] = df[df$class==classes[j],f_name]#
+  	kd[[j]]  = density(f_class[[j]])#
+  	densities[[j]] = function(x){#
+		min_den <- quantile(kd[[j]]$y,.05)#
+		de <- approx(kd[[j]]$x,kd[[j]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+em
+i=1
+#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}
+K5
+K=5
+#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}
+i
+j
+phat
+phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)
+#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)
+maxiter=1000
+#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)
+phat
+phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001
+phat[1,]
+denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}
+# Set up empirical density function for Classes 1-5 for unknown data set.#
+	# Set up empirical density function for Class 1#
+	f_class1 = df[df$class=="eb",f_name]#
+    	kd1  = density(f_class1)#
+    	dens1 = function(x){#
+		min_den <- quantile(kd1$y,.05)#
+		de <- approx(kd1$x,kd1$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 2#
+    	f_class2 = df[df$class=="lpv",f_name]#
+    	kd2  = density(f_class2)#
+    	dens2 = function(x){#
+		min_den <- quantile(kd2$y,.05)#
+		de <- approx(kd2$x,kd2$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 3#
+    	f_class3 = df[df$class=="rrab",f_name]#
+    	kd3  = density(f_class3)#
+    	dens3 = function(x){#
+		min_den <- quantile(kd3$y,.05)#
+		de <- approx(kd3$x,kd3$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+#
+	# Set up empirical density function for Class 4#
+    	f_class4 = df[df$class=="rrc",f_name]#
+    	kd4  = density(f_class4)#
+    	dens4 = function(x){#
+		min_den <- quantile(kd4$y,.05)#
+		de <- approx(kd4$x,kd4$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 5#
+    	f_class5 = df[df$class=="sxp_ds",f_name]#
+    	kd5  = density(f_class5)#
+    	dens5 = function(x){#
+		min_den <- quantile(kd5$y,.05)#
+		de <- approx(kd5$x,kd5$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	densities <- list(dens1,dens2,dens3,dens4,dens5)#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+f_name
+p_list[[f_name]]
+document()
+#Set up list objects to hold density function components.#
+  f_class <- list()#
+  kd <- list()#
+  densities <- list()
+# Set up empirical density function for Classes 1-k for unknown data set.#
+  for (j in 1:k){#
+  	f_class[[j]] = df[df$class==classes[j],f_name]#
+  	kd[[j]]  = density(f_class[[j]])#
+  	densities[[j]] = function(x){#
+		min_den <- quantile(kd[[j]]$y,.05)#
+		de <- approx(kd[[j]]$x,kd[[j]]$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)}#
+	} #End loop over classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+p_list[[f_name]]
+for (h in 1:k){#
+		assign(paste('f_class',h,sep="") = df[df$class==classses[h],f_name]#
+    	assign(paste('kd',h,sep="")  = paste('f_class',h,sep="")#
+    	#dens1 = function(x){#
+		#	min_den <- quantile(kd1$y,.05)#
+		#	de <- approx(kd1$x,kd1$y,x)$y#
+		#	de[is.na(de)] <- min_den#
+		#	return(de)#
+		#}#
+	}
+h
+h=1
+assign(paste('f_class',h,sep="") = df[df$class==classses[h],f_name]
+assign(paste('f_class',h,sep="") <- df[df$class==classses[h],f_name]
+assign(paste('f_class',h,sep="")) = df[df$class==classses[h],f_name]
+assign(paste('f_class',h,sep="")) = df[df$class==classes[h],f_name]
+paste('f_class',h,sep="")
+df[df$class==classes[h],f_name]
+assign(paste('f_class',h,sep="")) <- df[df$class==classes[h],f_name]
+assign("x",1)
+x
+assign(x,2)
+assign(paste('f_class',h,sep=""), df[df$class==classes[h],f_name])
+fname1
+f_class1
+assign(paste('kd',h,sep="",paste('f_class',h,sep=""))
+assign(paste('kd',h,sep=""),paste('f_class',h,sep=""))
+kd1
+f_class = df[df$class==classes[j],f_name]	#
+	 	assign(paste('kd',h,sep=''),density(f_class)
+)
+kd1
+kd1
+kd2
+kd3
+kd4
+kd5
+paste(kd,1)
+kd1
+paste('kd',1)
+paste('kd',1,sep="")
+value(paste('kd',1,sep=''))
+eval(paste('kd',1,sep=""))
+eval(parse(paste('kd',1,sep="")))
+eval(parse(text=paste('kd',1,sep="")))
+eval(parse(text=paste('kd',1,sep="")))$y
+for (h in 1:k){#
+		f_class = df[df$class==classes[j],f_name]	#
+	 	assign(paste('kd',h,sep=''),density(f_class))#
+	 	assign(paste('dens',h,sep=""),#
+	 		function(x){#
+	 			min_den <- quantile(eval(parse(text=paste('kd',h,sep="")))$y,.05)#
+	 			de <- approx(eval(parse(text=paste('kd',1,sep="")))$x, 		#
+	 				eval(parse(text=paste('kd',1,sep="")))$y,x)$y#
+	 			de[is.na(de)] <- min_den#
+	 			return(de)	#
+	 		}#
+	 	)#
+	}
+dens1
+kd1
+kd2
+kd3
+kd4
+kd5
+densities <- list(dens1,dens2,dens3,dens4,dens5)
+densities
+em <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+em
+emCalcMix2 <- function(x,densities,p=rep(.2,5),maxiter=2000,conv=.00001){#
+	#Argument Definitions:#
+	# x = vector of values#
+	# densities = list of density functions, containing k functions#
+	# p = vector of starting probabilities.  length(p) must equal k.#
+	# maxiter = maximum number of EM algorithm iterations allowed.#
+	# conv = change in the log-likelihood from one iteration to next#
+	#			to consider convergence to be met.#
+	K = length(densities) #Defines number of densities provided.#
+	## --------------------------------------#
+	##Error check sum(probs = 1):#
+	if (sum(p)!=1) stop("Sum of probabilities must equal 1.")#
+	##Error check: Number of starting probs p = number of densities provided in list#
+	if (length(densities)  != length(p)){  #
+		stop("Provide same number of densities and starting probabilities")}#
+	## Error check density inputs:#
+	for (i in 1:K){#
+		try(densities[[i]](x),silent=T)#
+		if(substr(geterrmessage(),1,26)=='Error in densities[[i]](x)'){#
+			stop("All densities must be in valid format. \n#
+				Example: dens1 = function(x) {return(dnorm(x,mean=0,sd=1))}")}#
+	}#
+	## --------------------------------------#
+	#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)#
+	phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001#
+	#Loop until convergence is met, or max iterations is met.#
+	for (i in 1:maxiter){#
+		#EXPECTATION STEP#
+		#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x,j) #
+		}#
+#
+		#Calculate estimated responsibilities#
+		for (j in 1:K){#
+			ghat[j,] <- phat[i,j]*densities[[j]](x,j) / denom#
+		}#
+		#MAXIMIZATION STEP#
+		phat[i+1,] <- rowMeans(ghat)#
+		#CALCULATE LOG-LIKELIHOOD FUNCTION#
+		for (j in 1:K){#
+			l[i+1] <- l[i+1] + sum(log(phat[i+1,j]*densities[[j]](x,j)+epsilon))#
+		}#
+		iterations <- i+1 #Increment iteration count.#
+		#CHECK IF CONVERGENCE MET#
+		if(abs(l[i+1]-l[i])<=conv) {break}#
+	}#
+	#Data cleanup.#
+	phat <- phat[1:iterations,] #Get rid of any unused phat placeholders#
+	l <- l[1:iterations] #Get rid of any unused l placeholders#
+	#Function output#
+	return(list(p=phat[i+1,],iter=iterations,allp=phat,logl=l))	#
+}
+f_name
+p[[f_name]]
+em$p
+f_name
+feature_names <- colnames(df)[2:ncol(df)]  # Assume Class is the first column#
+  p_list=list()  # Set up a list to hold the mixing proportions for each feature.#
+  #Extract all individual classes, in alphabetical order.#
+  classes <- sort(unique(data$class))#
+  k <- length(classes) #Number of classes.#
+  #Set up lists to hold kd and density functions.#
+  f_class <- list()#
+  kd <- list()#
+  densities <- list()
+classes
+df=unknown
+p_list=list()  # Set up a list to hold the mixing proportions for each feature.#
+  #Extract all individual classes, in alphabetical order.#
+  classes <- sort(unique(df$class))#
+  k <- length(classes) #Number of classes.#
+  #Set up lists to hold kd and density functions.#
+  f_class <- list()#
+  kd <- list()#
+  densities <- list()
+classes
+f_name
+# Set up empirical density function for Classes 1-k for unknown data set.#
+	for (h in 1:k){#
+		f_class[[h]] = df[df$class==classes[h],f_name]#
+		kd[[h]] <- density(f_class[[h]])#
+		densities[[h]] = function(x,h){#
+			min_den <- quantile(kd[[h]]$y,.05)#
+			de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+			de[is.na(de)] <- min_den#
+			return(de)#
+			}#
+	} #End loop for classes.#
+#
+	# Combine samples#
+ 	f_sample = df[,f_name]#
+#
+	# Estimate the mixing proportion#
+	em <- emCalcMix2(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)#
+	p_list[[f_name]] <- em$p
+p_list[[f_name]]
+est_mixing_props_linear[[f_name]]
+est_mixing_props_hip[[f_name]]
+EST_MIXING_PROPS[[1]]
+densities
+em2 <- emCalcMix2(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+em1 <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+emCalcMix <- function(x,densities,p=rep(.2,5),maxiter=2000,conv=.00001){#
+	#Argument Definitions:#
+	# x = vector of values#
+	# densities = list of density functions, containing k functions#
+	# p = vector of starting probabilities.  length(p) must equal k.#
+	# maxiter = maximum number of EM algorithm iterations allowed.#
+	# conv = change in the log-likelihood from one iteration to next#
+	#			to consider convergence to be met.#
+	K = length(densities) #Defines number of densities provided.#
+	i=1#
+	j=j#
+	## --------------------------------------#
+	##Error check sum(probs = 1):#
+	if (sum(p)!=1) stop("Sum of probabilities must equal 1.")#
+	##Error check: Number of starting probs p = number of densities provided in list#
+	if (length(densities)  != length(p)){  #
+		stop("Provide same number of densities and starting probabilities")}#
+	## Error check density inputs:#
+	for (i in 1:K){#
+		try(densities[[i]](x),silent=T)#
+		if(substr(geterrmessage(),1,26)=='Error in densities[[i]](x)'){#
+			stop("All densities must be in valid format. \n#
+				Example: dens1 = function(x) {return(dnorm(x,mean=0,sd=1))}")}#
+	}#
+	## --------------------------------------#
+	#Set up placeholders for p estimates, log-likelihood estimates, and iter count.#
+	len <- length(p)#
+	#Vector to store est props for each iter.#
+	phat <- matrix(rep(-10,len*(maxiter+1)),nrow=maxiter+1,byrow=T)#
+	phat[1,] <- p #Set first phat estimate row to starting value.#
+	l <- rep(0,maxiter+1)#
+	iterations <- 1#
+	epsilon <- 0.000001#
+	#Loop until convergence is met, or max iterations is met.#
+	for (i in 1:maxiter){#
+		#EXPECTATION STEP#
+		#Calculate estimated responsibility for each obs.#
+		denom <- 0 #Reset denominator before beginning step.#
+		ghat <- matrix(0,nrow=K,ncol=length(x)) #Store ghat values.#
+		#Calculate denominator for each ghat_i value.#
+		for (j in 1:K) { #
+			denom <- denom + phat[i,j]*densities[[j]](x) #
+		}#
+#
+		#Calculate estimated responsibilities#
+		for (j in 1:K){#
+			ghat[j,] <- phat[i,j]*densities[[j]](x) / denom#
+		}#
+		#MAXIMIZATION STEP#
+		phat[i+1,] <- rowMeans(ghat)#
+		#CALCULATE LOG-LIKELIHOOD FUNCTION#
+		for (j in 1:K){#
+			l[i+1] <- l[i+1] + sum(log(phat[i+1,j]*densities[[j]](x)+epsilon))#
+		}#
+		iterations <- i+1 #Increment iteration count.#
+		#CHECK IF CONVERGENCE MET#
+		if(abs(l[i+1]-l[i])<=conv) {break}#
+	}#
+	#Data cleanup.#
+	phat <- phat[1:iterations,] #Get rid of any unused phat placeholders#
+	l <- l[1:iterations] #Get rid of any unused l placeholders#
+	#Function output#
+	return(list(p=phat[i+1,],iter=iterations,allp=phat,logl=l))	#
+}
+em1 <- emCalcMix(f_sample,densities,p=rep(.2,5),maxiter=1000,conv=.00001)
+# Set up empirical density function for Classes 1-5 for unknown data set.#
+	# Set up empirical density function for Class 1#
+	f_class1 = df[df$class=="eb",f_name]#
+    	kd1  = density(f_class1)#
+    	dens1 = function(x){#
+		min_den <- quantile(kd1$y,.05)#
+		de <- approx(kd1$x,kd1$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 2#
+    	f_class2 = df[df$class=="lpv",f_name]#
+    	kd2  = density(f_class2)#
+    	dens2 = function(x){#
+		min_den <- quantile(kd2$y,.05)#
+		de <- approx(kd2$x,kd2$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 3#
+    	f_class3 = df[df$class=="rrab",f_name]#
+    	kd3  = density(f_class3)#
+    	dens3 = function(x){#
+		min_den <- quantile(kd3$y,.05)#
+		de <- approx(kd3$x,kd3$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+#
+	# Set up empirical density function for Class 4#
+    	f_class4 = df[df$class=="rrc",f_name]#
+    	kd4  = density(f_class4)#
+    	dens4 = function(x){#
+		min_den <- quantile(kd4$y,.05)#
+		de <- approx(kd4$x,kd4$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}#
+	# Set up empirical density function for Class 5#
+    	f_class5 = df[df$class=="sxp_ds",f_name]#
+    	kd5  = density(f_class5)#
+    	dens5 = function(x){#
+		min_den <- quantile(kd5$y,.05)#
+		de <- approx(kd5$x,kd5$y,x)$y#
+		de[is.na(de)] <- min_den#
+		return(de)#
+	}
+densities1 <- list(dens1,dens2,dens3,dens4,dens5)
+#Set up lists to hold kd and density functions.#
+  f_class <- list()#
+  kd <- list()#
+  densities2 <- list()#
+  # Iterate over the feature set#
+  for (f_name in feature_names) {#
+ 	# Set up empirical density function for Classes 1-k for unknown data set.#
+	for (h in 1:k){#
+		f_class[[h]] = df[df$class==classes[h],f_name]#
+		kd[[h]] <- density(f_class[[h]])#
+		densities2[[h]] = function(x,h){#
+			min_den <- quantile(kd[[h]]$y,.05)#
+			de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+			de[is.na(de)] <- min_den#
+			return(de)#
+			}#
+	} #End loop for classes.
+# Set up empirical density function for Classes 1-k for unknown data set.#
+	for (h in 1:k){#
+		f_class[[h]] = df[df$class==classes[h],f_name]#
+		kd[[h]] <- density(f_class[[h]])#
+		densities2[[h]] = function(x,h){#
+			min_den <- quantile(kd[[h]]$y,.05)#
+			de <- approx(kd[[h]]$x,kd[[h]]$y,x)$y#
+			de[is.na(de)] <- min_den#
+			return(de)#
+			}#
+	} #End loop for classes.
+densities1
+densities2
+em1 <- emCalcMix(f_sample,densities1,p=rep(.2,5),maxiter=1000,conv=.00001)
+em2 <- emCalcMix2(f_sample,densities2,p=rep(.2,5),maxiter=1000,conv=.00001)
+em1$p
+em2$p
+document()
+document()
+document()
