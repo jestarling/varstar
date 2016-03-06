@@ -33,35 +33,30 @@
 "linear"
 
 #---------------------------------------------------------
-###roxygen2 Documentation for the est_mixing_props_hip list object:
+###roxygen2 Documentation for the em_by_feature list object:
 
-#' List of k estimated class proportions for each feature of the hip data set.
+#' List containing output of the EM algorithm run for each individual feature.
 #'
-#' This object is the result of running the featureMixtureProportion(hip)
-#' function.  It is designed to streamline the code run time for analysis of hip,
-#' as the function takes some time to compute.
+#' This object is the result of running emAllFeatures function for data sets each containing
+#' the class column and the single feature.  Generated using maxiter=1000, conv=.00001.
 #'
-#' @format A list object with 2118 elements; each element is vector of length k:
+#' @format A list object with four elements:
 #' \describe{
-#'   \item{list[[1]]}{Vector of estimated class proportions for feature 1}
-#'   \item{list[[2]]}{Vector of estimated class proportions for feature 2}
+#'   \item{$est_mixing_props}{Matrix of estimated class proportions (cols) for each feature (rows)}
+#'   \item{$feature_MSEs}{Vector of MSEs for each feature, for estimated props. vs unknown props.}
+#'   \item{$feature_iter}{Vector of number of iterations to EM convergence for each feature.}
+#'   \item{$feature_log}{List of vectors of log-likelihood functions for each feature..}
 #'   ...
 #' }
-"est_mixing_props_hip"
+"em_by_feature"
 
 #---------------------------------------------------------
-###roxygen2 Documentation for the est_mixing_props_linear list object:
+###roxygen2 Documentation for the sample_model object:
 
-#' List of k estimated class proportions for each feature of the linear data set.
+#' Sample model using weighted data, out of the box random forest, EM feature selection.
+#' Error rate of 18% for classifying linear data using hip data.
 #'
-#' This object is the result of running the featureMixtureProportion(linear)
-#' function.  It is designed to streamline the code run time for analysis of
-#' linear, as the function takes some time to compute.
-#'
-#' @format A list object with 5509 elements; each element is vector of length k:
-#' \describe{
-#'   \item{list[[1]]}{Vector of estimated class proportions for feature 1}
-#'   \item{list[[2]]}{Vector of estimated class proportions for feature 2}
-#'   ...
-#' }
-"est_mixing_props_linear"
+#' @format A list object containing model components.
+#' 
+"sample_model"
+

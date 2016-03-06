@@ -40,6 +40,7 @@
 #' @param grid A grid for the tuneGrid parameter in the train (caret) function. Defaults to NULL.
 #' @param keeps A vector of feature names to consider in the model (must include 'class'). 
 #' Defaults to NULL.
+#' @param samps A vector of sample sizes by class for the sampsize random forest argument.
 #'
 #' @keywords random forest variable star classification
 #'
@@ -65,10 +66,14 @@
 
 #----------------------------------------------------------------
 
-myRF = function(known, unknown, ctrl, grid, keeps)
+myRF = function(known, unknown, ctrl, grid, keeps, sampsize=NULL)
 {	
 	x = list() #Set up empty list to hold function output.
 	grid=grid #Initialize grid input to avoid errors.
+	
+	#If no samps value provided, set equal to rows in known set.
+	if (is.null(sampsize)) sampsize=nrow(known)
+
 
 	#Train model using known data.
 	x$model <- train(class ~ ., 
@@ -76,7 +81,8 @@ myRF = function(known, unknown, ctrl, grid, keeps)
 			             method='rf',
 			             metric='Accuracy',
 			             trControl= ctrl,
-			             tuneGrid=grid)
+			             tuneGrid=grid,
+			             sampsize=samps)
 
 	#Predict class values for unknown data.
 	x$classPred <- predict(x$model, newdata=unknown)						

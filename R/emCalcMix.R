@@ -132,6 +132,7 @@ emCalcMix <- function(x,densities,p=rep(.2,5),maxiter=2000,conv=.00001){
 		phat[i+1,] <- rowMeans(ghat)
 		
 		#CALCULATE LOG-LIKELIHOOD FUNCTION
+		#(Is actually minimizing the neg-log-likelihood fctn.)
 		for (j in 1:K){
 			l[i+1] <- l[i+1] + sum(log(phat[i+1,j]*densities[[j]](x,j)+epsilon))
 		}

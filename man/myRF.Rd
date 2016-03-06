@@ -4,7 +4,7 @@
 \alias{myRF}
 \title{myRF: A Random Forest function}
 \usage{
-myRF(known, unknown, ctrl, grid, keeps)
+myRF(known, unknown, ctrl, grid, keeps, sampsize = NULL)
 }
 \arguments{
 \item{known}{A data set with known classes, used to classify the unknown data set.
@@ -19,6 +19,8 @@ predicted for this data set.  Defaults to NULL.}
 
 \item{keeps}{A vector of feature names to consider in the model (must include 'class'). 
 Defaults to NULL.}
+
+\item{samps}{A vector of sample sizes by class for the sampsize random forest argument.}
 }
 \value{
 A list containing the following components:

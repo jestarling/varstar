@@ -2,18 +2,29 @@
 % Please edit documentation in R/featureMixtureProportion.R
 \name{featureMixtureProportion}
 \alias{featureMixtureProportion}
-\title{featureMixtureProportion(df)}
+\title{featureMixtureProportion(unknown,known)}
 \usage{
-featureMixtureProportion(df)
+featureMixtureProportion(unknown, known, p = rep(0.2, 5), maxiter = 1000)
 }
 \arguments{
-\item{df}{A data frame containing rows of observations.  The first column must be
-class.  Other columns contain features. Defaults to NULL.}
+\item{unknown}{A data frame containing rows of observations, with unknown classes.
+Columns contain features. Defaults to NULL.}
+
+\item{known}{A data frame containing rows of observations, with known classes.
+The first column must be class.  Other columns contain features. Defaults to NULL.}
+
+\item{p}{A vector containing initial class proportion estimates. Defaults to (.2,.2,.2,.2,.2).}
 }
 \value{
+A list containing two objects: $phat and $convergence
+
+$phat is a list containing one element for each feature in the data set.
+
 A list containing one element for each feature in the data set.
 
-Each list element is a vector of k mixing proportions.
+Each $phat list element is a vector of k mixing proportions.
+
+$convergence is a data frame containing details on the EM algorithm convergence.
 }
 \description{
 This function calls the \code{\link{emCalcMix}} function repeatedly, for each 
@@ -21,7 +32,7 @@ feature (column) in the data set given. Creates estimated class proportion vecto
 for each feature. Data set must have 'class' as the first column.
 }
 \examples{
-est_mixing_proportions <- featureMixtureProportion(df=unknown)
+est_mixing_proportions <- featureMixtureProportion(unknown=df1,known=df2)
 
 }
 \author{
