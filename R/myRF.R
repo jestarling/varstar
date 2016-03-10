@@ -72,7 +72,7 @@ myRF = function(known, unknown, ctrl, grid, keeps, sampsize=NULL)
 	grid=grid #Initialize grid input to avoid errors.
 	
 	#If no samps value provided, set equal to rows in known set.
-	if (is.null(sampsize)) sampsize=nrow(known)
+	if (is.null(sampsize)) samps=nrow(known)
 
 
 	#Train model using known data.
